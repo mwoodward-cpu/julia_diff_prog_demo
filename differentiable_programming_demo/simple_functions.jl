@@ -32,7 +32,7 @@ display(cos(1.0))
 
 G(x) = Zygote.gradient(s, x)
 
-M = 1000
+M = 400
 x_grid = 4*pi .* rand(M) .- 2*pi
 
 # g_data = G.(x_grid)
@@ -44,8 +44,8 @@ for i in 1 : M
     err[i] = g_data[i] - cos(x_grid[i])
 end
 
-p1 = scatter(x_grid, err)
-display(p1)
+# p1 = scatter(x_grid, err)
+# display(p1)
 
 p2 = scatter(x_grid, s.(x_grid))
 scatter!(x_grid, g_data)
@@ -102,5 +102,5 @@ scatter!(r_grid, g2_data, color = "red", label = "W.gradient")
 plot!(x -> dW_dr(x), 0, 2*h, color = "black", label = "∂W/∂r", linewidth=2)
 display(p3)
 
-p4 = scatter(r_grid, err)
+p4 = scatter(r_grid, err, label="err", title="error")
 display(p4)
