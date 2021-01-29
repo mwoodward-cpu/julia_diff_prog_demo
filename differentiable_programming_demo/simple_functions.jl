@@ -66,8 +66,13 @@ h = 0.5
 sigma = (10. / (7. * pi * h * h));
 
 function W(r)
-  q = r / h;   if (q > 2.)   return 0.;   end
-  if (q > 1.)   return (sigma * (2. - q)^3 / 4.);   end
+  q = r / h;
+  if (q > 2.)
+    return 0.;
+  end
+  if (q > 1.)
+    return (sigma * (2. - q)^3 / 4.);
+  end
   return (sigma * (1. - 1.5 * q * q * (1. - q / 2.)));
 end
 
@@ -104,3 +109,17 @@ display(p3)
 
 p4 = scatter(r_grid, err, label="err", title="error")
 display(p4)
+
+
+
+#----multi variate functions
+
+function fxy(x, y)
+    return 3*x^2 + 1 + y^3 - 3*y
+end
+
+println(fxy(1,2))
+
+grad_xy(x) = Zygote.gradient(fxy, Params([x, y]))
+
+println(grad_xy(1,2))
