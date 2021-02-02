@@ -7,48 +7,48 @@ using Flux, Plots
 
 #------- linear regression step
 
-A = rand(2, 5)
-b = rand(2)
-
-model(x) = A*x .+ b
-
-
-function l2_loss(x,y)
-    y_hat = model(x)
-    sum((y .- y_hat).^2)
-end
-
-#We can take gradient of loss and apply gradient descent
-x,y = rand(5), rand(2)
-println("loss1 = ", l2_loss(x,y))
-gs = gradient(() -> l2_loss(x,y), params(A, b))
-
-display(gs[A])
-
-println("A1 =        ")
-display(A)
-A_grad = gs[A]
-
-
-A = A - 0.05 .* A_grad
-println("A2 =        ")
-display(A)
-println("loss2 = ", l2_loss(x,y))
-
-epochs = 500
-x,y = rand(5), rand(2)
-lr = 0.01;
-for k = 1 : epochs
-    global A, b
-    gs = gradient(() -> l2_loss(x,y), params(A, b))
-    A_grad = gs[A]
-    b_grad = gs[b]
-
-    A = A - lr .* A_grad
-    b = b - lr .* b_grad
-
-    println("loss = ", l2_loss(x,y))
-end
+# A = rand(2, 5)
+# b = rand(2)
+#
+# model(x) = A*x .+ b
+#
+#
+# function l2_loss(x,y)
+#     y_hat = model(x)
+#     sum((y .- y_hat).^2)
+# end
+#
+# #We can take gradient of loss and apply gradient descent
+# x,y = rand(5), rand(2)
+# println("loss1 = ", l2_loss(x,y))
+# gs = gradient(() -> l2_loss(x,y), params(A, b))
+#
+# display(gs[A])
+#
+# println("A1 =        ")
+# display(A)
+# A_grad = gs[A]
+#
+#
+# A = A - 0.05 .* A_grad
+# println("A2 =        ")
+# display(A)
+# println("loss2 = ", l2_loss(x,y))
+#
+# epochs = 500
+# x,y = rand(5), rand(2)
+# lr = 0.01;
+# for k = 1 : epochs
+#     global A, b
+#     gs = gradient(() -> l2_loss(x,y), params(A, b))
+#     A_grad = gs[A]
+#     b_grad = gs[b]
+#
+#     A = A - lr .* A_grad
+#     b = b - lr .* b_grad
+#
+#     println("loss = ", l2_loss(x,y))
+# end
 
 
 
@@ -94,8 +94,11 @@ L2(x) = w2 * x .+ b2
 
 nn_model2(x) = L2(sig.(L1(x)))
 
+pred = nn_model2.(x_data)
+println(size(pred))
+
 function Loss(x, y)
-    y_hat = nn_model2(x)
+    y_hat = nn_model2.(x)
     sum((y .- y_hat).^2)
 end
 
@@ -117,3 +120,7 @@ fix grad
 #
 #     println("loss = ", Loss(y_gt, y_pred))
 # end
+
+θ = (w1,w2,b1,b2)
+θ_ = gradient(θ -> Loss(x_data, y_gt), θ)[1]
+display(θ_)
