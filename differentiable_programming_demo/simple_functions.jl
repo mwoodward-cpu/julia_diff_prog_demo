@@ -114,12 +114,37 @@ display(p4)
 
 #----multi variate functions
 
-function fxy(x, y)
+
+g6(a,b) = gradient((a, b) -> a*b, a, b)
+
+
+function ff(x, y)
     return 3*x^2 + 1 + y^3 - 3*y
 end
 
-println(fxy(1,2))
+g7(x,y) = gradient(ff, x, y)
 
-grad_xy(x) = Zygote.gradient(fxy, Params([x, y]))
 
-println(grad_xy(1,2))
+
+
+
+h = 0.25;
+
+function W2(x, y)
+  r = sqrt(x^2 + y^2)
+  q = r / h;
+  if (q > 2.)
+    return 0.;
+  end
+  if (q > 1.)
+    return (sigma * (2. - q)^3 / 4.);
+  end
+  return (sigma * (1. - 1.5 * q * q * (1. - q / 2.)));
+end
+x_grid2 = -2*h:0.01:2*h
+y_grid2 = -2*h:0.01:2*h
+pw2 = plot(x_grid2, y_grid2, W2, st=:surface)
+display(pw2)
+dW2(x, y) = gradient(W2, x, y)
+# pdw2 = plot(x_grid2./5, y_grid2./5, dW2, st=:surface)
+# display(pdw2)
