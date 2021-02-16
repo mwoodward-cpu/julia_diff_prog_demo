@@ -46,6 +46,7 @@ callback = function (p, l, pred)
   display(plt)
   # Tell sciml_train to not halt the optimization. If return true, then
   # optimization stops.
+  sleep(1.0)
   return false
 end
 
