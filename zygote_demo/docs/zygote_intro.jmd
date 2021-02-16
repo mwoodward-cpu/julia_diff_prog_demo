@@ -1,0 +1,79 @@
+---
+title: Applications of differential programming (∂P) with Julia
+author: Michael Woodward
+---
+
+We will explore some of the basics of Zygote, how it works, and some basic applications
+
+## Intro to ∂P
+
+Essentially, differential programming (automatic differentiation) recognizes that code is a composition of simple functions (or simple operations)
+like +, *, /, etc. Differentiating a scientific code (say an integrator or entire simulator) amounts to applying the chain rule to the code which is
+a composition of simple operations.
+
+#### Forward and reverse mode (when and how)
+
+$$f(t,u) = \frac{du}{dt}$$
+
+The Radioactive decay problem is the first order linear ODE problem of an exponential with a negative coefficient, which represents the half-life of the process in question. Should the coefficient be positive, this would represent a population growth equation.
+
+```julia
+using OrdinaryDiffEq, Plots
+gr()
+
+#Half-life of Carbon-14 is 5,730 years.
+C₁ = 5.730
+
+#Setup
+u₀ = 1.0
+tspan = (0.0, 1.0)
+
+#Define the problem
+radioactivedecay(u,p,t) = -C₁*u
+
+#Pass to solver
+prob = ODEProblem(radioactivedecay,u₀,tspan)
+sol = solve(prob,Tsit5())
+
+#Plot
+plot(sol,linewidth=2,title ="Carbon-14 half-life", xaxis = "Time in thousands of years", yaxis = "Percentage left", label = "Numerical Solution")
+plot!(sol.t, t->exp(-C₁*t),lw=3,ls=:dash,label="Analytical Solution")
+```
+
+## Second Order Linear ODE
+
+#### Simple Harmonic Oscillator
+
+Another classical example is the harmonic oscillator, given by
+$$
+\ddot{x} + \omega^2 x = 0
+$$
+with the known analytical solution
+$$
+\begin{align*}
+x(t) &= A\cos(\omega t - \phi) \\
+v(t) &= -A\omega\sin(\omega t - \phi),
+\end{align*}
+$$
+where
+$$
+A = \sqrt{c_1 + c_2} \qquad\text{and}\qquad \tan \phi = \frac{c_2}{c_1}
+$$
+with $c_1, c_2$ constants determined by the initial conditions such that
+$c_1$ is the initial position and $\omega c_2$ is the initial velocity.
+
+Instead of transforming this to a system of ODEs to solve with `ODEProblem`,
+we can use `SecondOrderODEProblem` as follows.
+
+```julia
+# Simple Harmonic Oscillator Problem
+using OrdinaryDiffEq, Plots
+
+#Parameters
+ω = 1
+
+#Initial Conditions
+x₀ = [0.0]
+dx₀ = [π/2]
+
+tspan = (0.0, 2π)
