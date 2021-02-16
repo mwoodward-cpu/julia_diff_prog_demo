@@ -1,5 +1,5 @@
 """
-simple examples of diff programming using Flux
+Flux uses Zygote (and other packages) for ML applications
 """
 
 using Flux, Plots
@@ -15,7 +15,6 @@ f_data = f.(x_data)
 ∂f_data = ∂f.(x_data)
 df_data = df.(x_data)
 
-p1 = plot(x_data, f_data, label="f")
 plot!(x_data, ∂f_data, label="∂f")
 scatter!(x_data, df_data, label="Δf")
 
@@ -29,10 +28,10 @@ display(p1)
 A = randn(2, 5);
 b = randn(2);
 
-model(x) = A*x .+ b
+lin_model(x) = A*x .+ b
 
 function l2_loss(x, y)
-    y_hat = model(x)
+    y_hat = lin_model(x)
     return sum((y .- y_hat).^2)
 end
 
@@ -46,6 +45,7 @@ display(gs[A])
 epochs = 200
 lr = 0.05
 for k in 1:epochs
+    global A, b
     gs = gradient(() -> l2_loss(x, y), params(A,b))
     A_grad = gs[A];
     b_grad = gs[b];
@@ -56,5 +56,6 @@ for k in 1:epochs
     println("loss = ", l2_loss(x,y))
 end
 
+display(A)
 
 #-------------Simple NN
