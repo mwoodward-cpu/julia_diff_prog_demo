@@ -32,6 +32,7 @@ display(psol)
 sol_pred = solve(prob, Tsit5(), p=p, saveat = tsteps)
 
 
+# for find parameters that generated gt
 function loss(p)
   # prob2 = ODEProblem(lotka_volterra!, u0, tspan, p)
   sol_pred = solve(prob, Tsit5(), p=p, saveat = tsteps)
@@ -39,6 +40,7 @@ function loss(p)
   return loss, sol_pred
 end
 
+# display learning
 callback = function (p, l, pred)
   display(l)
   plt = plot(sol)

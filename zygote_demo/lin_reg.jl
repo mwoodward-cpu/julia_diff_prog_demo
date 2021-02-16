@@ -10,6 +10,7 @@ mutable struct LinearRegression
     name::String
 end
 
+#Function for building LinearRegression object initializing fields
 LinearRegression(nparams, name) = LinearRegression(randn(1, nparams), 0.0, name)
 
 
@@ -36,11 +37,10 @@ Y = weights_gt * X .+ bias_gt
 # Add noise to `X`
 X .+= 0.001.*randn(size(X))
 
+model = LinearRegression(size(X, 1), "Example")
+
 println("pre-trained loss = ", loss(model::LinearRegression, X, Y))
 
-display(X)
-
-model = LinearRegression(size(X, 1), "Example")
 
 # Calculate gradient upon `model` for the first example in our training set
 grads = Zygote.gradient(model) do m
@@ -54,7 +54,7 @@ display(grads)
 grads = grads[1]
 
 display(grads)
-#An odd type that contains the ∂L/∂θ (sensitivity) values
+#contains the ∂L/∂θ (sensitivity) values
 
 grads = grads[]
 
@@ -78,5 +78,5 @@ for idx in 1 : size(X, 2)
 end
 
 println("model weights = ", model.weights)
-println(" weights_gt =   ", weights_gt)
+println("   weights_gt =   ", weights_gt)
 println("post-trained loss = ", loss(model::LinearRegression, X, Y))

@@ -8,11 +8,13 @@ may extend to two paramters and finding the sin function
 ∂_t x = v, ∂_t v = -sinx - αv + F
 
 """
+NN_model(x)= W2 * sigma(W1 * x + b1) + b2
+∇N(x) = gradient( )
 
 using Plots, Zygote
 
-N = 3000;
-h = 3/N;
+N = 1000;
+h = 1/N;
 Y = [0., 3., 0., 0.];
 x = Y[1:2]
 println(x)
@@ -38,7 +40,7 @@ end
 
 function l2_loss(f, x, F, y_gt)
     y_pred = RK4(f, x, F)
-    return sum((y_pred .- y_gt).^2)
+    return sum((y_pred - y_gt).^2)
 end
 
 
@@ -62,7 +64,7 @@ y_gt = RK4(f, x, F_gt)
 function training_autograd(n_epchs, sample_rate, f, x, y_gt)
     F_hat = rand()
     F_track = zeros(round(Int, n_epchs/sample_rate))
-    lr = 1e-3
+    lr = 1e-2
     ii = 1;
     for k ∈ 1 : n_epchs
         ∂_F = gradient(F_hat -> l2_loss(f, x, F_hat, y_gt), F_hat)[1]

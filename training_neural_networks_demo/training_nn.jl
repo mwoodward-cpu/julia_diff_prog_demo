@@ -54,6 +54,7 @@ using Flux, Plots
 
 #------------Neural networks
 
+
 #Activation functions
 sig(x) = 1/(1 + exp(-x))
 
@@ -101,6 +102,7 @@ function Loss(x, y)
     y_hat = nn_model2.(x)
     sum((y .- y_hat).^2)
 end
+
 
 # for k = 1 : 300
 """

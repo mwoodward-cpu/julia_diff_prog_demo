@@ -31,8 +31,15 @@ function s(x)
     return ts
 end
 
+c = Zygote.gradient(s, 0.5)  #∂s/∂x(0.5)
+display(c) #returns tuple
+c = c[1]   #first component gives the derivative
+c_t = cos(0.5)
+println("  c = ", c, "
+c_t = ", c_t)
 
-∇s(x) = Zygote.gradient(s, x)[1]
+
+∇s(x) = gradient(s, x)[1]
 display(∇s)
 println(cos(1.0))
 println(∇s(1.0))
@@ -45,7 +52,7 @@ display(p1)
 
 
 f(x) = mod(x, 2*pi)
-∇f(x) = Zygote.gradient(f, x)[1]
+∇f(x) = gradient(f, x)[1]
 p2 = plot(x -> f(x), 0, 8*pi)
 plot!(x -> ∇f(x), 0, 8*pi)
 display(p2)
@@ -55,7 +62,6 @@ display(p2)
 
 #Linear transformation
 A = rand(2, 3); x = rand(3);
-display(A)
 ga = gradient(A -> sum(A*x), A)[1]
 display(ga)
 
@@ -68,7 +74,7 @@ function pow(x, n)
     end
     return r
 end
-println(gradient(x -> pow(x, 3), 5))
+println(gradient(x -> pow(x, 3), 2))
 
 
 
@@ -87,7 +93,8 @@ f1x = map(x -> 2*x, 1:10)
 fdx = map(1:10) do x
     2x
 end
-
+println(f1x)
+println(fdx)
 
 
 
