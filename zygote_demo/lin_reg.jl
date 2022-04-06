@@ -78,5 +78,8 @@ for idx in 1 : size(X, 2)
 end
 
 println("model weights = ", model.weights)
-println("   weights_gt =   ", weights_gt)
-println("post-trained loss = ", loss(model::LinearRegression, X, Y))
+println("   weights_gt = ", weights_gt)
+
+println("
+
+post-trained loss = ", loss(model::LinearRegression, X, Y))

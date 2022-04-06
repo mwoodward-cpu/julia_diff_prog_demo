@@ -8,7 +8,7 @@ Exploring differentiable programming with Zygote. Claims:
     higher order functions
     ...
 
-See "Don't Unroll Adjoint: Differentiating SSA-form programs" for the understanding the magic
+See "Don't Unroll Adjoint: Differentiating SSA-form programs"
 """
 
 
@@ -74,7 +74,7 @@ function pow(x, n)
     end
     return r
 end
-println(gradient(x -> pow(x, 3), 2))
+println(gradient(x -> pow(x, 3), 2)[1])
 
 
 
@@ -93,6 +93,7 @@ f1x = map(x -> 2*x, 1:10)
 fdx = map(1:10) do x
     2x
 end
+
 println(f1x)
 println(fdx)
 

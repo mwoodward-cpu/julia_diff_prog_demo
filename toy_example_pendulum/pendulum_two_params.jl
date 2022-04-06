@@ -47,17 +47,14 @@ F_gt = 0.1;
 y_gt = RK4(f, x, F_gt, α_gt)
 display(y_gt)
 
-# F = 0.2 * rand()
-# α = 0.4 * rand()
-# y_pred = RK4(f, x, F, α)
-#
-# # display(y_pred)
-# # println((y_pred .- y_gt).^2))
-#
-# ∂_F = gradient(F -> l2_loss(f, x, F, y_gt), F)[1]
-#
-# println("∂M_∂F = ", ∂_F)
-# # display(∂_F)
+F = 0.2 * rand()
+α = 0.4 * rand()
+y_pred = RK4(f, x, F, α)
+
+θ = (0.4, 0.35)
+∂_θ = gradient(θ -> l2_loss(f, x, θ[1], θ[2], y_gt), θ)[1]
+println("∂l_∂θ = ", ∂_θ)
+# display(∂_F)
 
 
 
